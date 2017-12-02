@@ -1,6 +1,6 @@
 package com.sbt.rnd.meetup2017.ignite;
 
-import com.sbt.rnd.meetup2017.data.Client;
+import com.sbt.rnd.meetup2017.data.ogm.Client;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;

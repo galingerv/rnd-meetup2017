@@ -1,23 +1,15 @@
+import com.sbt.rnd.meetup2017.transport.api.client.ClientApi;
 import com.sbt.rnd.meetup2017.data.ogm.Account;
-import com.sbt.rnd.meetup2017.data.ogm.Address;
 import com.sbt.rnd.meetup2017.data.ogm.Client;
 import com.sbt.rnd.meetup2017.data.ogm.Document;
-import com.sbt.rnd.meetup2017.data.ogm.breed_n_dog.Breed;
-import com.sbt.rnd.meetup2017.data.ogm.breed_n_dog.Dog;
 import com.sbt.rnd.meetup2017.data.ogm.dictionary.Currency;
-import org.apache.ignite.Ignite;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.transaction.HeuristicMixedException;
-import javax.transaction.HeuristicRollbackException;
-import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
-import javax.transaction.SystemException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,43 +18,14 @@ import java.util.Date;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+@ContextConfiguration(locations = "classpath:spring-beans.xml")
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TestOgm {
+    @Autowired
     private EntityManager em;
 
-    private Ignite ignite;
-
-    public static void main(String[] args) throws SystemException, NotSupportedException, HeuristicRollbackException, HeuristicMixedException, RollbackException {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        Breed collie = new Breed();
-        collie.setName("breed-collie");
-        em.persist(collie);
-        Dog dina = new Dog();
-        dina.setName("dina");
-        dina.setBreed(collie);
-        //persist dina
-        em.persist(dina);
-        em.getTransaction().commit();
-
-        //get ID dina
-        Long dinaId = dina.getId();
-        // query
-        Dog ourDina = em.find(Dog.class, dinaId);
-        System.out.println("Dina:" + ourDina);
-        em.close();
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ogm-jpa-tutorial");
-        em = emf.createEntityManager();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        em.close();
-    }
+    @Autowired
+    private ClientApi clientApi;
 
     @Test
     public void testAccountPersistAndRead() throws Exception {
@@ -90,7 +53,7 @@ public class TestOgm {
         assertThat(accountRead.getId(), is(id));
     }
 
-    @Test
+    /*@Test
     public void testAddressPersistAndRead() throws Exception {
         Address address = new Address("ул. Ленина", 344000);
         assertThat(address.getId(), is(nullValue(Long.class)));
@@ -105,24 +68,25 @@ public class TestOgm {
         em.getTransaction().commit();
         assertThat(address.getId(), is(id));
 
-        Address addressRead = em.find(Address.class, id);
+        Address addressRead = em.findById(Address.class, id);
         assertThat(addressRead, is(notNullValue(Address.class)));
         assertThat(addressRead.getId(), is(id));
-    }
+    }*/
 
     @Test
     public void testClientPersistAndRead() throws Exception {
-        Client client = new Client("Пупкин", "09999991110");
-        assertThat(client.getId(), is(nullValue(Long.class)));
+        //Client client = new Client("Пупкин", "09999991110");
+        Client client = clientApi.create("Пупкин", "09999991110",null);
+        //assertThat(client.getId(), is(nullValue(Long.class)));
 
-        em.getTransaction().begin();
-        assertThat(client.getId(), is(nullValue(Long.class)));
+        //em.getTransaction().begin();
+        //assertThat(client.getId(), is(nullValue(Long.class)));
 
-        em.persist(client);
+        //em.persist(client);
         assertThat(client.getId(), is(notNullValue(Long.class)));
 
         Long id = client.getId();
-        em.getTransaction().commit();
+        //em.getTransaction().commit();
         assertThat(client.getId(), is(id));
 
         Client clientRead = em.find(Client.class, id);

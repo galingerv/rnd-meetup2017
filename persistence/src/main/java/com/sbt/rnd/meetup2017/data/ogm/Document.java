@@ -1,17 +1,21 @@
 package com.sbt.rnd.meetup2017.data.ogm;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-public class Document {
+public class Document implements Serializable{
     private Long id;
     private Account debetAccount;
     private Account creditAccount;
     private BigDecimal sumDoc;
     private Date dateDoc;
     private String aim;
+    private int state=0;
+    private Date dateWork;
+    private Integer version;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -70,5 +74,30 @@ public class Document {
 
     public void setAim(String aim) {
         this.aim = aim;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public Date getDateWork() {
+        return dateWork;
+    }
+
+    public void setDateWork(Date dateWork) {
+        this.dateWork = dateWork;
+    }
+
+    @Version
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

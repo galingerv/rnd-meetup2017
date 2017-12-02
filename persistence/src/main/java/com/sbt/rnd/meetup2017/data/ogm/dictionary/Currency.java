@@ -4,11 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Currency {
+public class Currency implements Serializable {
 
     private Long id;
+
+    public Currency() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -21,8 +25,9 @@ public class Currency {
     }
 
     private String code;
-    private int intCode;
+    private Integer intCode;
     private String name;
+    private Boolean isDefault;
 
     public Currency(String code, int intCode, String name) {
         this.code = code;
@@ -38,11 +43,11 @@ public class Currency {
         this.code = code;
     }
 
-    public int getIntCode() {
+    public Integer getIntCode() {
         return intCode;
     }
 
-    public void setIntCode(int intCode) {
+    public void setIntCode(Integer intCode) {
         this.intCode = intCode;
     }
 
@@ -52,5 +57,13 @@ public class Currency {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(Boolean aDefault) {
+        isDefault = aDefault;
     }
 }

@@ -1,27 +1,16 @@
 package com.sbt.rnd.meetup2017.data.ogm;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
-public class Address {
-
-    private Long id;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+@Embeddable
+public class Address implements Serializable {
 
     private String street;
     private int zip;
+
+    public Address() {
+    }
 
     public Address(String street, int zip) {
         this.street = street;
